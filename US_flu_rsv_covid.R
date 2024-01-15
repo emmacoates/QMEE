@@ -1,4 +1,5 @@
 # Week 1 assignment 
+# Calculating mean rate of infection for each flu/RSV/COVID for each year 
 
 resp_data <- read.csv("Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
 
