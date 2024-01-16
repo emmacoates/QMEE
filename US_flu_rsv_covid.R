@@ -13,7 +13,7 @@ resp_dd <- read.csv("Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospit
 # year = year disease data collected (input as str)
 #
 # OUTPUT
-# a data frame combined data for specified year and disease monitoring network
+# a data frame of combined data for specified year and disease monitoring network
 get_overall_yearly_dd <- function( disease_net, year ) {
 
     ( resp_dd 
@@ -70,8 +70,8 @@ mean_rate_COVID2022 <- sum(get_overall_yearly_dd('COVID-NET', '2022')$Weekly.Rat
                             length(get_overall_yearly_dd('COVID-NET', '2022')$Weekly.Rate)
 mean_rate_COVID2023 <- sum(get_overall_yearly_dd('COVID-NET', '2023')$Weekly.Rate)/
                             length(get_overall_yearly_dd('COVID-NET', '2023')$Weekly.Rate)
-mean_rate_COVID_yearly <- c(mean_rate_COVID2018, mean_rate_COVID2019, mean_rate_COVID2020, 
-                          mean_rate_COVID2021, mean_rate_COVID2022, mean_rate_COVID2023)
+mean_rate_COVID_yearly <- c(NA, NA, mean_rate_COVID2020, mean_rate_COVID2021, 
+                            mean_rate_COVID2022, mean_rate_COVID2023)
 
 plot(2018:2023, type='b', mean_rate_flu_yearly, col='blue', ylim=c(0,9), xlab='Year', ylab='Mean rate of infection')
 points(2018:2023, type='b', mean_rate_COVID_yearly, col='red')
