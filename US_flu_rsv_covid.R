@@ -1,119 +1,81 @@
 # Week 1 assignment 
 # Calculating mean rate of infection for each flu/RSV/COVID for each year 
 
-resp_data <- read.csv("Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
+library(tidyverse)
 
-# extracting combined data from flu for each year into separate data frames 
-overall2018_flu <- resp_data[which(resp_data$Surveillance.Network == 'FluSurv-NET' & 
-                        resp_data$MMWR.Year == '2018' & resp_data$Age.group == 'Overall' & 
-                        resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                        resp_data$Site == 'Overall'),]
-overall2019_flu <- resp_data[which(resp_data$Surveillance.Network == 'FluSurv-NET' & 
-                                      resp_data$MMWR.Year == '2019' & resp_data$Age.group == 'Overall' & 
-                                      resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                      resp_data$Site == 'Overall'),]
-overall2020_flu <- resp_data[which(resp_data$Surveillance.Network == 'FluSurv-NET' & 
-                                      resp_data$MMWR.Year == '2020' & resp_data$Age.group == 'Overall' & 
-                                      resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                      resp_data$Site == 'Overall'),]
-overall2021_flu <- resp_data[which(resp_data$Surveillance.Network == 'FluSurv-NET' & 
-                                      resp_data$MMWR.Year == '2021' & resp_data$Age.group == 'Overall' & 
-                                      resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                      resp_data$Site == 'Overall'),]
-overall2022_flu <- resp_data[which(resp_data$Surveillance.Network == 'FluSurv-NET' & 
-                                      resp_data$MMWR.Year == '2022' & resp_data$Age.group == 'Overall' & 
-                                      resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                      resp_data$Site == 'Overall'),]
-overall2023_flu <- resp_data[which(resp_data$Surveillance.Network == 'FluSurv-NET' & 
-                                      resp_data$MMWR.Year == '2023' & resp_data$Age.group == 'Overall' & 
-                                      resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                      resp_data$Site == 'Overall'),]
+resp_dd <- read.csv("Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
 
-# extracting combined data from RSV for each year into separate data frames 
-overall2018_RSV <- resp_data[which(resp_data$Surveillance.Network == 'RSV-NET' & 
-                                     resp_data$MMWR.Year == '2018' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2019_RSV <- resp_data[which(resp_data$Surveillance.Network == 'RSV-NET' & 
-                                     resp_data$MMWR.Year == '2019' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2020_RSV <- resp_data[which(resp_data$Surveillance.Network == 'RSV-NET' & 
-                                     resp_data$MMWR.Year == '2020' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2021_RSV <- resp_data[which(resp_data$Surveillance.Network == 'RSV-NET' & 
-                                     resp_data$MMWR.Year == '2021' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2022_RSV <- resp_data[which(resp_data$Surveillance.Network == 'RSV-NET' & 
-                                     resp_data$MMWR.Year == '2022' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2023_RSV <- resp_data[which(resp_data$Surveillance.Network == 'RSV-NET' & 
-                                     resp_data$MMWR.Year == '2023' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
+# Extracts data combined from all genders, races/ethnicities, age groups given a 
+# specified year and disease monitoring network (i.e., FluSurv-NET, RSV-NET, COVID-NET)
+#
+# INPUT 
+# disease_net = specified disease network (input as str)
+# year = year disease data collected (input as str)
+#
+# OUTPUT
+# a data frame combined data for specified year and disease monitoring network
+get_overall_yearly_dd <- function( disease_net, year ) {
 
-# extracting combined data from COVID for each year into separate data frames 
-overall2018_COVID <- resp_data[which(resp_data$Surveillance.Network == 'COVID-NET' & 
-                                     resp_data$MMWR.Year == '2018' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2019_COVID <- resp_data[which(resp_data$Surveillance.Network == 'COVID-NET' & 
-                                     resp_data$MMWR.Year == '2019' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2020_COVID <- resp_data[which(resp_data$Surveillance.Network == 'COVID-NET' & 
-                                     resp_data$MMWR.Year == '2020' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2021_COVID <- resp_data[which(resp_data$Surveillance.Network == 'COVID-NET' & 
-                                     resp_data$MMWR.Year == '2021' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2022_COVID <- resp_data[which(resp_data$Surveillance.Network == 'COVID-NET' & 
-                                     resp_data$MMWR.Year == '2022' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
-overall2023_COVID <- resp_data[which(resp_data$Surveillance.Network == 'COVID-NET' & 
-                                     resp_data$MMWR.Year == '2023' & resp_data$Age.group == 'Overall' & 
-                                     resp_data$Sex == 'Overall' & resp_data$Race.Ethnicity == 'Overall' & 
-                                     resp_data$Site == 'Overall'),]
+    ( resp_dd 
+    %>% filter( Surveillance.Network == disease_net, 
+                MMWR.Year == year,
+                Age.group == 'Overall', 
+                Sex == 'Overall', 
+                Race.Ethnicity == 'Overall', 
+                Site == 'Overall' ) )
+  
+}
 
+# extracting combined data from flu for each year into separate data frames & 
 # calculating mean overall rate for each year for flu 
-mean_rate_flu2018 <- sum(overall2018_flu$Weekly.Rate)/length(overall2018_flu$Weekly.Rate)
-mean_rate_flu2019 <- sum(overall2019_flu$Weekly.Rate)/length(overall2019_flu$Weekly.Rate)
-mean_rate_flu2020 <- sum(overall2020_flu$Weekly.Rate)/length(overall2020_flu$Weekly.Rate)
-mean_rate_flu2021 <- sum(overall2021_flu$Weekly.Rate)/length(overall2021_flu$Weekly.Rate)
-mean_rate_flu2022 <- sum(overall2022_flu$Weekly.Rate)/length(overall2022_flu$Weekly.Rate)
-mean_rate_flu2023 <- sum(overall2023_flu$Weekly.Rate)/length(overall2023_flu$Weekly.Rate)
+mean_rate_flu2018 <- sum(get_overall_yearly_dd('FluSurv-NET', '2018')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('FluSurv-NET', '2018')$Weekly.Rate)
+mean_rate_flu2019 <- sum(get_overall_yearly_dd('FluSurv-NET', '2019')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('FluSurv-NET', '2019')$Weekly.Rate)
+mean_rate_flu2020 <- sum(get_overall_yearly_dd('FluSurv-NET', '2020')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('FluSurv-NET', '2020')$Weekly.Rate )
+mean_rate_flu2021 <- sum(get_overall_yearly_dd('FluSurv-NET', '2021')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('FluSurv-NET', '2021')$Weekly.Rate )
+mean_rate_flu2022 <- sum(get_overall_yearly_dd('FluSurv-NET', '2022')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('FluSurv-NET', '2022')$Weekly.Rate )
+mean_rate_flu2023 <- sum(get_overall_yearly_dd('FluSurv-NET', '2023')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('FluSurv-NET', '2023')$Weekly.Rate )
 mean_rate_flu_yearly <- c(mean_rate_flu2018, mean_rate_flu2019, mean_rate_flu2020, 
                           mean_rate_flu2021, mean_rate_flu2022, mean_rate_flu2023)
 
+# extracting combined data from RSV for each year into separate data frames & 
 # calculating mean overall rate for each year for RSV
-mean_rate_RSV2018 <- sum(overall2018_RSV$Weekly.Rate)/length(overall2018_RSV$Weekly.Rate)
-mean_rate_RSV2019 <- sum(overall2019_RSV$Weekly.Rate)/length(overall2019_RSV$Weekly.Rate)
-mean_rate_RSV2020 <- sum(overall2020_RSV$Weekly.Rate)/length(overall2020_RSV$Weekly.Rate)
-mean_rate_RSV2021 <- sum(overall2021_RSV$Weekly.Rate)/length(overall2021_RSV$Weekly.Rate)
-mean_rate_RSV2022 <- sum(overall2022_RSV$Weekly.Rate)/length(overall2022_RSV$Weekly.Rate)
-mean_rate_RSV2023 <- sum(overall2023_RSV$Weekly.Rate)/length(overall2023_RSV$Weekly.Rate)
+mean_rate_RSV2018 <- sum(get_overall_yearly_dd('RSV-NET', '2018')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('RSV-NET', '2018')$Weekly.Rate)
+mean_rate_RSV2019 <- sum(get_overall_yearly_dd('RSV-NET', '2019')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('RSV-NET', '2019')$Weekly.Rate)
+mean_rate_RSV2020 <- sum(get_overall_yearly_dd('RSV-NET', '2020')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('RSV-NET', '2020')$Weekly.Rate)
+mean_rate_RSV2021 <- sum(get_overall_yearly_dd('RSV-NET', '2021')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('RSV-NET', '2021')$Weekly.Rate)
+mean_rate_RSV2022 <- sum(get_overall_yearly_dd('RSV-NET', '2022')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('RSV-NET', '2022')$Weekly.Rate)
+mean_rate_RSV2023 <- sum(get_overall_yearly_dd('RSV-NET', '2023')$Weekly.Rate)/
+                          length(get_overall_yearly_dd('RSV-NET', '2023')$Weekly.Rate)
 mean_rate_RSV_yearly <- c(mean_rate_RSV2018, mean_rate_RSV2019, mean_rate_RSV2020, 
                           mean_rate_RSV2021, mean_rate_RSV2022, mean_rate_RSV2023)
 
-# calculating mean overall rate for each year for COVID 
-mean_rate_COVID2018 <- sum(overall2018_COVID$Weekly.Rate)/length(overall2018_COVID$Weekly.Rate)
-mean_rate_COVID2019 <- sum(overall2019_COVID$Weekly.Rate)/length(overall2019_COVID$Weekly.Rate)
-mean_rate_COVID2020 <- sum(overall2020_COVID$Weekly.Rate)/length(overall2020_COVID$Weekly.Rate)
-mean_rate_COVID2021 <- sum(overall2021_COVID$Weekly.Rate)/length(overall2021_COVID$Weekly.Rate)
-mean_rate_COVID2022 <- sum(overall2022_COVID$Weekly.Rate)/length(overall2022_COVID$Weekly.Rate)
-mean_rate_COVID2023 <- sum(overall2023_COVID$Weekly.Rate)/length(overall2023_COVID$Weekly.Rate)
+# extracting combined data from COVID for each year into separate data frames & 
+# calculating mean overall rate for each year for COVID
+mean_rate_COVID2020 <- sum(get_overall_yearly_dd('COVID-NET', '2020')$Weekly.Rate)/
+                            length(get_overall_yearly_dd('COVID-NET', '2020')$Weekly.Rate)
+mean_rate_COVID2021 <- sum(get_overall_yearly_dd('COVID-NET', '2021')$Weekly.Rate)/
+                            length(get_overall_yearly_dd('COVID-NET', '2021')$Weekly.Rate)
+mean_rate_COVID2022 <- sum(get_overall_yearly_dd('COVID-NET', '2022')$Weekly.Rate)/
+                            length(get_overall_yearly_dd('COVID-NET', '2022')$Weekly.Rate)
+mean_rate_COVID2023 <- sum(get_overall_yearly_dd('COVID-NET', '2023')$Weekly.Rate)/
+                            length(get_overall_yearly_dd('COVID-NET', '2023')$Weekly.Rate)
 mean_rate_COVID_yearly <- c(mean_rate_COVID2018, mean_rate_COVID2019, mean_rate_COVID2020, 
                           mean_rate_COVID2021, mean_rate_COVID2022, mean_rate_COVID2023)
 
 plot(2018:2023, type='b', mean_rate_flu_yearly, col='blue', ylim=c(0,9), xlab='Year', ylab='Mean rate of infection')
 points(2018:2023, type='b', mean_rate_COVID_yearly, col='red')
 points(2018:2023, type='b', mean_rate_RSV_yearly, col='purple')
-legend('topleft', legend=c('flu', 'RSV', 'COVID'), col=c('blue', 'red', 'purple'), lty=1)
+legend('topleft', legend=c('flu', 'COVID', 'RSV'), col=c('blue', 'red', 'purple'), lty=1)
 title('Mean rate of infection per year: flu, RSV, COVID')
 
