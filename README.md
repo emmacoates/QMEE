@@ -13,6 +13,6 @@ The biological questions I would hope to answer about these data include do the 
 
 'resp_data_analysis.R' reads in the .rds file of the cleaned data ('respTableClean.rds'), and calculates the mean rate of infection for each flu/RSV/COVID for each year for data combined from all genders, races/ethnicities, age groups, and geographical locations/sites. 
 
-Both scripts should be run from the QMEE directory. 
+Both scripts should be run from the QMEE main repo directory. 
 
 The data is aggregated by race/ethnicity, gender, age group, and geographical location, so these data could be used to investigate existing disparities across different demographic categories and what mechanisms lead to said disparities. These data could also be used to investigate the effect the spread of RSV/COVID/Flu have on one another given these data are also aggregated by respiratory disease. 
