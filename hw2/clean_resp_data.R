@@ -28,7 +28,7 @@ print(ggplot(respTable, aes(x=`Cumulative Rate`))
 # )
 
 # taking BMB's suggestions from below!
-respTableClean <- (respTable 
+respTableClean <- ( respTable 
                    |> drop_na() # drop all missing data 
                    |> rename(Network = 'Surveillance Network',
                              MMWRyear = 'MMWR Year',
@@ -39,7 +39,16 @@ respTableClean <- (respTable
                              cumulativeRate = 'Cumulative Rate',
                              endingDate = 'Week Ending Date') # renaming variables to easier-to-type names
                    |> mutate(across(where(is.character), factor)) # changing character vectors to factors
+                   |> filter(ageGroup ==  '0-4 years' 
+                             | ageGroup == '5-17 years'
+                             | ageGroup == '18-49 years'
+                             | ageGroup == '50-64 years'
+                             | ageGroup == '65+ years' 
+                             | ageGroup == 'Overall') # getting rid of age group redundancies
 )
+
+summary(respTableClean)
+  
 
 ## BMB: you could also use respTable %>% tidyr::drop_na() for this
 ## * I often use this cleaning step to change variable names to computer-friendly
