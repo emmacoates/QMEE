@@ -18,14 +18,23 @@ print(ggplot(respTable, aes(x=`Weekly Rate`))
 
 print(ggplot(respTable, aes(x=`Cumulative Rate`))
       + geom_histogram()
-)
-
+      )
 
 respTableClean <- ( respTable 
                     %>% filter(!is.na(`Weekly Rate`),
                                !is.na(`Cumulative Rate`),
                                !is.na(Sex),
                                !is.na(`Race/Ethnicity`))
-                    ) 
+)
+
+## BMB: you could also use respTable %>% tidyr::drop_na() for this
+## * I often use this cleaning step to change variable names to computer-friendly
+## ones (e.g. in particular no spaces), via dplyr::rename()
+## * You should also consider changing character vectors to factors,
+## with sensible orderings (to do it by brute force, you can use
+## mutate(across(where(is.character), factor))
+## * you should consider creating a date variable from your Season and week variables (if you ever want to plot a long time series)
 
 saveRDS(respTableClean, file="hw2/tmp/respTableClean.rds")
+
+## mark: 2
