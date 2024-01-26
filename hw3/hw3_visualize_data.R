@@ -4,8 +4,8 @@
 library(readr)
 library(dplyr)
 library(tidyr)
-library(ggplot2)
-theme_set(theme_bw(base_size = 14)); library('wesanderson') ## setting themes
+library(ggplot2); theme_set(theme_bw(base_size = 14))
+install.packages('wesanderson'); library('wesanderson') ## setting themes 
 
 dat <- readRDS("hw2/tmp/respTableClean.rds") # load cleaned data
 
@@ -18,9 +18,7 @@ dat <- readRDS("hw2/tmp/respTableClean.rds") # load cleaned data
 ## Focusing on visualizing disparities in hospitalization rates among groups,  
 ## not focusing on differences between the diseases themselves in these plots. 
 
-timeDat <- ( dat 
-            |> filter(Network != 'Combined') # remove combined network (only want to look at separate networks for now)
-) 
+timeDat <- ( dat |> filter(Network != 'Combined') ) # remove combined network (only want to look at separate networks for now)  
 
 timeseries <- ( ggplot(timeDat)
          + aes(x=endingDate, y=weeklyRate, color=Network)
@@ -49,11 +47,11 @@ print(timeseries + facet_wrap(~Site)) # aggregating plots by site location (some
 ## any glaring/obvious differences
 ### by age ------------------------------------------------------------------
 bdatAge <- ( dat 
-            |> filter(Network != 'Combined',
-                      ageGroup != 'Overall')
+             |> filter(Network != 'Combined',
+                       ageGroup != 'Overall')
 )
 
-boxplotAge <- (ggplot(bdatAge,aes(x=ageGroup,y=weeklyRate,
+boxplotAge <- ( ggplot(bdatAge,aes(x=ageGroup,y=weeklyRate,
                        colour=Network))
        + geom_boxplot(outlier.colour=NULL)  ## set outlier points to same colour as boxes
        + scale_y_log10()
@@ -62,7 +60,7 @@ boxplotAge <- (ggplot(bdatAge,aes(x=ageGroup,y=weeklyRate,
 
 bdatAge_sort <- bdatAge |> mutate(across(ageGroup,~forcats::fct_reorder(.,weeklyRate)))
 
-print(boxplotAge
+print( boxplotAge
       %+% bdatAge_sort  ## substitute sorted data
       + coord_flip()      ## rotate entire plot
       + xlab('')          ## x-label redundant
@@ -75,7 +73,7 @@ bdatSex <- ( dat
                        Sex != 'Overall')
 )
 
-boxplotSex <- (ggplot(bdatSex,aes(x=Sex,y=weeklyRate,
+boxplotSex <- ( ggplot(bdatSex,aes(x=Sex,y=weeklyRate,
                                colour=Network))
             + geom_boxplot(outlier.colour=NULL)  ## set outlier points to same colour as boxes
             + scale_y_log10()
@@ -84,7 +82,7 @@ boxplotSex <- (ggplot(bdatSex,aes(x=Sex,y=weeklyRate,
 
 bdatSex_sort <- bdatSex |> mutate(across(Sex,~forcats::fct_reorder(.,weeklyRate)))
 
-print(boxplotSex
+print( boxplotSex
       %+% bdatSex_sort  ## substitute sorted data
       + coord_flip()      ## rotate entire plot
       + xlab("")          ## x-label redundant
@@ -97,7 +95,7 @@ bdatRace <- ( dat
                        Race != 'Overall')
 )
 
-boxplotRace <- (ggplot(bdatRace,aes(x=Race,y=weeklyRate,
+boxplotRace <- ( ggplot(bdatRace,aes(x=Race,y=weeklyRate,
                                colour=Network))
             + geom_boxplot(outlier.colour=NULL)  ## set outlier points to same colour as boxes
             + scale_y_log10()
@@ -106,7 +104,7 @@ boxplotRace <- (ggplot(bdatRace,aes(x=Race,y=weeklyRate,
 
 bdatRace_sort <- bdatRace |> mutate(across(Race,~forcats::fct_reorder(.,weeklyRate)))
 
-print(boxplotRace
+print( boxplotRace
       %+% bdatRace_sort  ## substitute sorted data
       + coord_flip()      ## rotate entire plot
       + xlab("")          ## x-label redundant
