@@ -60,7 +60,7 @@ boxplotAge <- (ggplot(bdatAge,aes(x=ageGroup,y=weeklyRate,
        + ylab('Weekly hospitalization rates')
 )
 
-bdatAge_sort <- bdatAge %>% mutate(across(ageGroup,~forcats::fct_reorder(.,weeklyRate)))
+bdatAge_sort <- bdatAge |> mutate(across(ageGroup,~forcats::fct_reorder(.,weeklyRate)))
 
 print(boxplotAge
       %+% bdatAge_sort  ## substitute sorted data
@@ -82,7 +82,7 @@ boxplotSex <- (ggplot(bdatSex,aes(x=Sex,y=weeklyRate,
             + ylab('Weekly hospitalization rates')
 )
 
-bdatSex_sort <- bdatSex %>% mutate(across(Sex,~forcats::fct_reorder(.,weeklyRate)))
+bdatSex_sort <- bdatSex |> mutate(across(Sex,~forcats::fct_reorder(.,weeklyRate)))
 
 print(boxplotSex
       %+% bdatSex_sort  ## substitute sorted data
@@ -104,7 +104,7 @@ boxplotRace <- (ggplot(bdatRace,aes(x=Race,y=weeklyRate,
             + ylab('Weekly hospitalization rates')
 )
 
-bdatRace_sort <- bdatRace %>% mutate(across(Race,~forcats::fct_reorder(.,weeklyRate)))
+bdatRace_sort <- bdatRace |> mutate(across(Race,~forcats::fct_reorder(.,weeklyRate)))
 
 print(boxplotRace
       %+% bdatRace_sort  ## substitute sorted data
