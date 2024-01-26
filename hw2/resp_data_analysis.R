@@ -6,7 +6,7 @@ library(tidyverse)
 library(readr)
 library(dplyr)
 
-respTableClean <- readRDS("respTableClean.rds")
+respTableClean <- readRDS("hw2/tmp/respTableClean.rds")
 
 # Extracts data combined from all genders, races/ethnicities, age groups, and 
 # geographical locations given a specified year and disease monitoring network 

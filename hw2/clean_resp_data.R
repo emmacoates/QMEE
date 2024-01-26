@@ -2,11 +2,11 @@
 # Cleans RESP-NET data 
 # Saves clean version of file as .RDS file
 
-library(tidyverse)
 library(readr)
 library(dplyr)
+library(tidyr)
 
-respTable <- read_csv("Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
+respTable <- read_csv("data/Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
 
 problems(respTable)
 summary(respTable)
@@ -28,4 +28,4 @@ respTableClean <- ( respTable
                                !is.na(`Race/Ethnicity`))
                     ) 
 
-saveRDS(respTableClean, "respTableClean.rds")
+saveRDS(respTableClean, file="hw2/tmp/respTableClean.rds")

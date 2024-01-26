@@ -3,7 +3,7 @@
 
 library(tidyverse)
 
-resp_dd <- read_csv("Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
+resp_dd <- read.csv("data/Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
 
 # Extracts data combined from all genders, races/ethnicities, age groups, and 
 # geographical locations given a specified year and disease monitoring network 
