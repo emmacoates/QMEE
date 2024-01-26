@@ -20,11 +20,25 @@ print(ggplot(respTable, aes(x=`Cumulative Rate`))
       + geom_histogram()
       )
 
-respTableClean <- ( respTable 
-                    %>% filter(!is.na(`Weekly Rate`),
-                               !is.na(`Cumulative Rate`),
-                               !is.na(Sex),
-                               !is.na(`Race/Ethnicity`))
+# respTableClean <- ( respTable 
+#                     %>% filter(!is.na(`Weekly Rate`),
+#                                !is.na(`Cumulative Rate`),
+#                                !is.na(Sex),
+#                                !is.na(`Race/Ethnicity`))
+# )
+
+# taking BMB's suggestions from below!
+respTableClean <- (respTable 
+                   |> drop_na() # drop all missing data 
+                   |> rename(Network = 'Surveillance Network',
+                             MMWRyear = 'MMWR Year',
+                             MMWRweek = 'MMWR Week',
+                             ageGroup = 'Age group',
+                             Race = 'Race/Ethnicity',
+                             weeklyRate = 'Weekly Rate', 
+                             cumulativeRate = 'Cumulative Rate',
+                             endingDate = 'Week Ending Date') # renaming variables to easier-to-type names
+                   |> mutate(across(where(is.character), factor)) # changing character vectors to factors
 )
 
 ## BMB: you could also use respTable %>% tidyr::drop_na() for this
