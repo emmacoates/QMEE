@@ -1,5 +1,5 @@
 # QMEE
-Repository for BIO 708 and testing my Git/GitHub setup.
+Repository for winter 2024 term Quantitative Methods in Ecology & Evolution (BIOL 708). 
 
 ## Week 1 assignment: CDC RESP-NET data
 
