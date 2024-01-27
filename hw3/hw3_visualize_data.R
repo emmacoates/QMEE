@@ -1,5 +1,5 @@
-# Week 3 assignment 
-# Visualizes cleaned data from hw2
+## Week 3 assignment 
+## Visualizes cleaned data from hw2
 
 library(readr)
 library(dplyr)
@@ -7,7 +7,7 @@ library(tidyr)
 library(ggplot2); theme_set(theme_bw(base_size = 14))
 install.packages('wesanderson'); library('wesanderson') ## setting themes 
 
-dat <- readRDS("hw2/tmp/respTableClean.rds") # load cleaned data
+dat <- readRDS("hw2/tmp/respTableClean.rds") ## load cleaned data
 
 ## NOTE FOR ALL PLOTS: hospitalization rate = number of residents in a surveillance 
 ##                      area who are hospitalized with laboratory-confirmed tests  
@@ -18,22 +18,22 @@ dat <- readRDS("hw2/tmp/respTableClean.rds") # load cleaned data
 ## Focusing on visualizing disparities in hospitalization rates among groups,  
 ## not focusing on differences between the diseases themselves in these plots. 
 
-timeDat <- ( dat |> filter(Network != 'Combined') ) # remove combined network (only want to look at separate networks for now)  
+timeDat <- ( dat |> filter(Network != 'Combined') ) ## remove combined network (only want to look at separate networks for now)  
 
 timeseries <- ( ggplot(timeDat)
          + aes(x=endingDate, y=weeklyRate, color=Network)
-         + geom_line(size = 0.75)
+         + geom_line(linewidth = 0.65)
          + xlab('')
          + ylab('Weekly hospitalization rates')
          + scale_colour_manual(values=c(wes_palette('Cavalcanti1'))) ## change palette
-) # creating time series plots
+) ## creating time series plots
 
 ## TOFIX: figure out how to re-order facets -- want ages in order, and all
 ## 'Overall' plots to be last -- order through data-set or through ggplot? 
-print(timeseries + facet_wrap(~ageGroup)) # aggregating plots by age 
-print(timeseries + facet_wrap(~Sex)) # aggregating plots by sex
-print(timeseries + facet_wrap(~Race)) # aggregating plots by race
-print(timeseries + facet_wrap(~Site)) # aggregating plots by site location (some missing data for a few sites)
+print(timeseries + facet_wrap(~ageGroup)) ## aggregating plots by age 
+print(timeseries + facet_wrap(~Sex)) ## aggregating plots by sex
+print(timeseries + facet_wrap(~Race)) ## aggregating plots by race
+print(timeseries + facet_wrap(~Site)) ## aggregating plots by site location (some missing data for a few sites)
 
 
 ## Box plots -----------------------------------------------------------------
@@ -51,20 +51,15 @@ bdatAge <- ( dat
                        ageGroup != 'Overall')
 )
 
-boxplotAge <- ( ggplot(bdatAge,aes(x=ageGroup,y=weeklyRate,
-                       colour=Network))
-       + geom_boxplot(outlier.colour=NULL)  ## set outlier points to same colour as boxes
-       + scale_y_log10()
-       + ylab('Weekly hospitalization rates')
+boxplotAge <- ( ggplot(bdatAge, aes(x = ageGroup, y = weeklyRate, colour = Network)) 
+                + geom_boxplot(outlier.colour=NULL)  ## set outlier points to same colour as boxes 
+                + ylab('Weekly hospitalization rates')
 )
 
-bdatAge_sort <- bdatAge |> mutate(across(ageGroup,~forcats::fct_reorder(.,weeklyRate)))
-
 print( boxplotAge
-      %+% bdatAge_sort  ## substitute sorted data
-      + coord_flip()      ## rotate entire plot
-      + xlab('')          ## x-label redundant
-      + scale_colour_manual(values=c(wes_palette('FantasticFox1'))) ## change palette
+       + coord_flip()      ## rotate entire plot
+       + xlab('')          ## x-label redundant
+       + scale_colour_manual(values=c(wes_palette('FantasticFox1'))) ## change palette
 )
 
 ### by sex ------------------------------------------------------------------
@@ -73,20 +68,16 @@ bdatSex <- ( dat
                        Sex != 'Overall')
 )
 
-boxplotSex <- ( ggplot(bdatSex,aes(x=Sex,y=weeklyRate,
-                               colour=Network))
-            + geom_boxplot(outlier.colour=NULL)  ## set outlier points to same colour as boxes
-            + scale_y_log10()
-            + ylab('Weekly hospitalization rates')
+boxplotSex <- ( ggplot(bdatSex,aes(x = Sex, y = weeklyRate, colour = Network))
+                + geom_boxplot(outlier.colour=NULL)  ## set outlier points to same colour as boxes
+                + ylab('Weekly hospitalization rates')
 )
 
-bdatSex_sort <- bdatSex |> mutate(across(Sex,~forcats::fct_reorder(.,weeklyRate)))
 
 print( boxplotSex
-      %+% bdatSex_sort  ## substitute sorted data
-      + coord_flip()      ## rotate entire plot
-      + xlab("")          ## x-label redundant
-      + scale_colour_manual(values=c(wes_palette('FantasticFox1'))) ## change palette
+       + coord_flip()      ## rotate entire plot
+       + xlab("")          ## x-label redundant
+       + scale_colour_manual(values=c(wes_palette('FantasticFox1'))) ## change palette
 )
 
 ### by race/ethnicity ---------------------------------------------------------
@@ -95,19 +86,20 @@ bdatRace <- ( dat
                        Race != 'Overall')
 )
 
-boxplotRace <- ( ggplot(bdatRace,aes(x=Race,y=weeklyRate,
-                               colour=Network))
-            + geom_boxplot(outlier.colour=NULL)  ## set outlier points to same colour as boxes
-            + scale_y_log10()
-            + ylab('Weekly hospitalization rates')
+boxplotRace <- ( ggplot(bdatRace,aes(x = Race, y = weeklyRate, colour = Network))
+                 + geom_boxplot(outlier.colour=NULL)  ## set outlier points to same colour as boxes
+                 + ylab('Weekly hospitalization rates')
 )
-
-bdatRace_sort <- bdatRace |> mutate(across(Race,~forcats::fct_reorder(.,weeklyRate)))
 
 print( boxplotRace
-      %+% bdatRace_sort  ## substitute sorted data
-      + coord_flip()      ## rotate entire plot
-      + xlab("")          ## x-label redundant
-      + scale_colour_manual(values=c(wes_palette('FantasticFox1'))) ## change palette
+       + coord_flip()      ## rotate entire plot
+       + xlab("")          ## x-label redundant
+       + scale_colour_manual(values=c(wes_palette('FantasticFox1'))) ## change palette
 )
 
+## TOFIX: warning messages from box plot transformation 
+## Warning messages:
+## 1: Transformation introduced infinite values in continuous y-axis 
+## 2: Removed 381 rows containing non-finite values (`stat_boxplot()`). 
+## Cause: putting the box plots on a log scale improves readability, but ignores rates = 0 -- 
+## removed log scale from box plots to include rates = 0 -- does this make the plots hard to read?
