@@ -5,6 +5,7 @@
 library(readr)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
 
 respTable <- read_csv("data/Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
 
