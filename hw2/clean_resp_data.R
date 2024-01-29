@@ -2,16 +2,20 @@
 # Cleans RESP-NET data 
 # Saves clean version of file as .RDS file
 
+## JD: You said this file was in the main repo directory but I found it in the hw2 subdirectory
+
 library(readr)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
+
+## JD: I needed to add this; please make sure your code just runs
 library(ggplot2)
 
 respTable <- read_csv("data/Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
 
 problems(respTable)
 summary(respTable)
-
 
 print(ggplot(respTable, aes(x=`Weekly Rate`))
       + geom_histogram()
