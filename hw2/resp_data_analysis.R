@@ -21,43 +21,43 @@ respTableClean <- readRDS("hw2/tmp/respTableClean.rds")
 get_overall_yearly_dd <- function( disease_net, year ) {
   
   ( respTableClean 
-    %>% filter( `Surveillance Network` == disease_net, 
-                `MMWR Year` == year,
-                `Age group` == 'Overall', 
+    %>% filter( Network == disease_net, 
+                MMWRyear == year,
+                ageGroup == 'Overall', 
                 Sex == 'Overall', 
-                `Race/Ethnicity` == 'Overall', 
+                Race == 'Overall', 
                 Site == 'Overall' ) )
   
 }
 
 # extracting combined data from flu for each year into separate data frames 
 # & calculating mean overall rate for each year for flu 
-mean_rate_flu2018 <- mean(get_overall_yearly_dd('FluSurv-NET', '2018')$'Weekly Rate')
-mean_rate_flu2019 <- mean(get_overall_yearly_dd('FluSurv-NET', '2019')$'Weekly Rate')
-mean_rate_flu2020 <- mean(get_overall_yearly_dd('FluSurv-NET', '2020')$'Weekly Rate')
-mean_rate_flu2021 <- mean(get_overall_yearly_dd('FluSurv-NET', '2021')$'Weekly Rate')
-mean_rate_flu2022 <- mean(get_overall_yearly_dd('FluSurv-NET', '2022')$'Weekly Rate')
-mean_rate_flu2023 <- mean(get_overall_yearly_dd('FluSurv-NET', '2023')$'Weekly Rate')
+mean_rate_flu2018 <- mean(get_overall_yearly_dd('FluSurv-NET', '2018')$weeklyRate)
+mean_rate_flu2019 <- mean(get_overall_yearly_dd('FluSurv-NET', '2019')$weeklyRate)
+mean_rate_flu2020 <- mean(get_overall_yearly_dd('FluSurv-NET', '2020')$weeklyRate)
+mean_rate_flu2021 <- mean(get_overall_yearly_dd('FluSurv-NET', '2021')$weeklyRate)
+mean_rate_flu2022 <- mean(get_overall_yearly_dd('FluSurv-NET', '2022')$weeklyRate)
+mean_rate_flu2023 <- mean(get_overall_yearly_dd('FluSurv-NET', '2023')$weeklyRate)
 mean_rate_flu_yearly <- c(mean_rate_flu2018, mean_rate_flu2019, mean_rate_flu2020, 
                           mean_rate_flu2021, mean_rate_flu2022, mean_rate_flu2023)
 
 # extracting combined data from RSV for each year into separate data frames 
 # & calculating mean overall rate for each year for RSV
-mean_rate_RSV2018 <- mean(get_overall_yearly_dd('RSV-NET', '2018')$'Weekly Rate')
-mean_rate_RSV2019 <- mean(get_overall_yearly_dd('RSV-NET', '2019')$'Weekly Rate')
-mean_rate_RSV2020 <- mean(get_overall_yearly_dd('RSV-NET', '2020')$'Weekly Rate')
-mean_rate_RSV2021 <- mean(get_overall_yearly_dd('RSV-NET', '2021')$'Weekly Rate')
-mean_rate_RSV2022 <- mean(get_overall_yearly_dd('RSV-NET', '2022')$'Weekly Rate')
-mean_rate_RSV2023 <- mean(get_overall_yearly_dd('RSV-NET', '2023')$'Weekly Rate')
+mean_rate_RSV2018 <- mean(get_overall_yearly_dd('RSV-NET', '2018')$weeklyRate)
+mean_rate_RSV2019 <- mean(get_overall_yearly_dd('RSV-NET', '2019')$weeklyRate)
+mean_rate_RSV2020 <- mean(get_overall_yearly_dd('RSV-NET', '2020')$weeklyRate)
+mean_rate_RSV2021 <- mean(get_overall_yearly_dd('RSV-NET', '2021')$weeklyRate)
+mean_rate_RSV2022 <- mean(get_overall_yearly_dd('RSV-NET', '2022')$weeklyRate)
+mean_rate_RSV2023 <- mean(get_overall_yearly_dd('RSV-NET', '2023')$weeklyRate)
 mean_rate_RSV_yearly <- c(mean_rate_RSV2018, mean_rate_RSV2019, mean_rate_RSV2020, 
                           mean_rate_RSV2021, mean_rate_RSV2022, mean_rate_RSV2023)
 
 # extracting combined data from COVID for each year into separate data frames 
 # & calculating mean overall rate for each year for COVID
-mean_rate_COVID2020 <- mean(get_overall_yearly_dd('COVID-NET', '2020')$'Weekly Rate')
-mean_rate_COVID2021 <- mean(get_overall_yearly_dd('COVID-NET', '2021')$'Weekly Rate')
-mean_rate_COVID2022 <- mean(get_overall_yearly_dd('COVID-NET', '2022')$'Weekly Rate')
-mean_rate_COVID2023 <- mean(get_overall_yearly_dd('COVID-NET', '2023')$'Weekly Rate')
+mean_rate_COVID2020 <- mean(get_overall_yearly_dd('COVID-NET', '2020')$weeklyRate)
+mean_rate_COVID2021 <- mean(get_overall_yearly_dd('COVID-NET', '2021')$weeklyRate)
+mean_rate_COVID2022 <- mean(get_overall_yearly_dd('COVID-NET', '2022')$weeklyRate)
+mean_rate_COVID2023 <- mean(get_overall_yearly_dd('COVID-NET', '2023')$weeklyRate)
 mean_rate_COVID_yearly <- c(NA, NA, mean_rate_COVID2020, mean_rate_COVID2021, 
                             mean_rate_COVID2022, mean_rate_COVID2023)
 
