@@ -9,7 +9,6 @@ library(ggplot2); theme_set(theme_bw(base_size = 14))
 ## BMB: please *don't* include install.packages()
 ##  in code -- leave that decision up to the person running the code
 
-## install.packages('wesanderson');
 library('wesanderson') ## setting themes 
 
 dat <- readRDS("hw2/tmp/respTableClean.rds") ## load cleaned data
