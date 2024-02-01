@@ -2,8 +2,10 @@ QMEE Winter 2024
 Emma Coates
 Week 4 Assignment, part 2
 
-	•	Formulate a hypothesis about your data, and discuss how you would test it statistically. 
-	⁃	Hypothesis: 
-	⁃	Test: 
+Problem: Formulate a hypothesis about your data, and discuss how you would test it statistically. 
+
+Solution: 
+
+
 
 
