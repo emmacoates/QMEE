@@ -4,8 +4,9 @@ Week 4 Assignment, part 2
 
 Problem: Formulate a hypothesis about your data, and discuss how you would test it statistically. 
 
-Solution: 
+Hypothesis: Individuals aged 65+ years are at a higher risk of hospitalization from COVID-19 infections. 
+
+Method of testing hypothesis: Bayesian approach -- find prior distribution, likelihood function & marginal probability to calculate prior distribution, P(hospitalized | 65+ years). 
 
 
-
-
+Note: I am starting off with a simple hypothesis/question to test to make sure I actually fully understand how to statistically test data!
