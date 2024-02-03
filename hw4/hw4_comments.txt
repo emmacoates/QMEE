@@ -1,0 +1,8 @@
+(if you write your solution in LaTeX or markdown or quarto you're welcome to push the source
+code to the repo so we can comment in your original document -- not necessary though).
+
+Very clear. Another interesting point is that in some cases the failure of a test (false positive)
+might not be independent across tests on the same individual/infection, e.g. if there is something
+about the genotype of the individual that makes them *always* test positive ...
+
+mark: 2.1
