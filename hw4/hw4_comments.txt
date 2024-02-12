@@ -5,4 +5,15 @@ Very clear. Another interesting point is that in some cases the failure of a tes
 might not be independent across tests on the same individual/infection, e.g. if there is something
 about the genotype of the individual that makes them *always* test positive ...
 
+About your hypothesis: (1) why Bayesian? This seems like a fairly straightforward problem where you
+wouldn't need all the Bayesian machinery, unless you have informative priors you want to include.
+What is your comparator?  Are you asking whether hospitalization of 65+ year individuals is higher
+for COVID-19 than for other respiratory illnesses, or higher than for COVID-19 for other age groups, or ... ?
+(The latter seems like a bit of a no-brainer -- is there a reason you would want to *test* this hypothesis,
+rather than (say) quantifying the magnitudes of the differences, with uncertainty?
+
+To do a frequentist likelihood comparison you'll need to specify a likelihood function (e.g., do you think
+the data are Normally distributed? Binomial?); for Bayesian tests you'll also need a prior. What did you have
+in mind?
+
 mark: 2.1
