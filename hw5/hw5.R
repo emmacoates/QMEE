@@ -58,5 +58,8 @@ mCovid2023 <- gam( formula = weeklyRate ~ ns(MMWRweek) + ageGroup,
 check_model(mCovid2023) ## diagnostic plots
 dwplot(mCovid2023, by_2sd = T) ## coefficient plot 
 
+## The coefficients plots support the prediction the age group 65+ years has a higher rates of hospitalization, 
+## but I would not use these models to accept this -- the diagnostic plots show the models not fitting the data well. 
+
 
 
