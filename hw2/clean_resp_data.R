@@ -2,16 +2,10 @@
 # Cleans RESP-NET data 
 # Saves clean version of file as .RDS file
 
-## JD: You said this file was in the main repo directory but I found it in the hw2 subdirectory
-## EC: My bad - I cleaned up my repo after BMB had marked my assignment and took his suggestions of cleaning 
-##      so I made a hw2 subdirectory after the fact
-
 library(readr)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-
-## JD: I needed to add this; please make sure your code just runs
 
 respTable <- read_csv("data/Rates_of_Laboratory-Confirmed_RSV__COVID-19__and_Flu_Hospitalizations_from_the_RESP-NET_Surveillance_Systems_20240115.csv")
 
@@ -26,16 +20,8 @@ print(ggplot(respTable, aes(x=`Cumulative Rate`))
       + geom_histogram()
       )
 
-# respTableClean <- ( respTable 
-#                     %>% filter(!is.na(`Weekly Rate`),
-#                                !is.na(`Cumulative Rate`),
-#                                !is.na(Sex),
-#                                !is.na(`Race/Ethnicity`))
-# )
-
-# taking BMB's suggestions from below!
 respTableClean <- ( respTable 
-                   |> drop_na() # drop all missing data 
+                   |> drop_na() ## drop all missing data 
                    |> rename(Network = 'Surveillance Network',
                              MMWRyear = 'MMWR Year',
                              MMWRweek = 'MMWR Week',
@@ -43,15 +29,23 @@ respTableClean <- ( respTable
                              Race = 'Race/Ethnicity',
                              weeklyRate = 'Weekly Rate', 
                              cumulativeRate = 'Cumulative Rate',
-                             endingDate = 'Week Ending Date') # renaming variables to easier-to-type names
-                   |> mutate(across(where(is.character), factor)) # changing character vectors to factors
+                             endingDate = 'Week Ending Date') ## renaming variables to easier-to-type names
+                   |> mutate(across(where(is.character), factor)) ## changing character vectors to factors
                    |> filter(ageGroup ==  '0-4 years' 
                              | ageGroup == '5-17 years'
                              | ageGroup == '18-49 years'
                              | ageGroup == '50-64 years'
                              | ageGroup == '65+ years' 
-                             | ageGroup == 'Overall') # getting rid of age group redundancies
+                             | ageGroup == 'Overall') ## getting rid of age group redundancies
 )
+
+ag <- gtools::mixedsort(levels(droplevels(respTableClean$ageGroup))) ## order age groups
+
+respTableClean <- ( respTableClean
+                    |> mutate(across(ageGroup, ~factor(., levels = ag)))
+                    |> mutate(across(Race, ~ forcats::fct_relevel(., "Overall", after = Inf)))
+                    |> mutate(across(Site, ~ forcats::fct_relevel(., "Overall", after = Inf)))
+) ## place 'overall' groups last
 
 summary(respTableClean)
   
