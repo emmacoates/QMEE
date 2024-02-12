@@ -5,10 +5,6 @@ library(readr)
 library(dplyr)
 library(tidyr)
 library(ggplot2); theme_set(theme_bw(base_size = 14))
-
-## BMB: please *don't* include install.packages()
-##  in code -- leave that decision up to the person running the code
-
 library('wesanderson') ## setting themes 
 
 dat <- readRDS("hw2/tmp/respTableClean.rds") ## load cleaned data
@@ -32,21 +28,11 @@ timeseries <- ( ggplot(timeDat)
          + scale_colour_manual(values=c(wes_palette('Cavalcanti1'))) ## change palette
 ) ## creating time series plots
 
-## TOFIX: figure out how to re-order facets -- want ages in order, and all
-## 'Overall' plots to be last -- order through data-set or through ggplot?
-
-## BMB: ordering is by data set
-ag <- gtools::mixedsort(levels(droplevels(timeDat$ageGroup)))
-timeDat_ordered <- (timeDat
-    |> mutate(across(ageGroup, ~factor(., levels = ag)))
-    ## put "Overall" last
-    |> mutate(across(Race, ~ forcats::fct_relevel(., "Overall", after = Inf)))
-)
 
 ## %+% substitutes new data (we could/should do the reordering upstream though)
-print(timeseries %+% timeDat_ordered + facet_wrap(~ageGroup)) ## aggregating plots by age 
+print(timeseries + facet_wrap(~ageGroup)) ## aggregating plots by age 
 print(timeseries + facet_wrap(~Sex)) ## aggregating plots by sex
-print(timeseries %+% timeDat_ordered + facet_wrap(~Race)) ## aggregating plots by race
+print(timeseries + facet_wrap(~Race)) ## aggregating plots by race
 
 ## BMB: definitely want to put 'overall' last. Should probably reorder states somehow,
 ##  but I'm not sure how (unless readers will want to look up particular states)
