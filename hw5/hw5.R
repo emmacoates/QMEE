@@ -28,38 +28,40 @@ plot(covidDat$endingDate, covidDat$weeklyRate) ## look at dot plot of data
 # Models ----------------------------------------------------------------------------------------------------
 
 ## -- separate models out by season (i.e., one season is 2019-20, next is 2020-21)
-## -- choose GAM for models w/ predictors of week in the season + age group -- I am assuming
+## -- choose lm for models w/ predictors of week in the season + age group -- I am assuming
 ##      age group would not be enough alone to get an good model for time series data 
 ## -- I think ARIMA would be a better model for time series data, but I am unsure/confused how 
-##      to include age as a predictor in an ARIMA model since it would be a categorial predictor 
-##      and not continuous, so I choose GAM as a compromise for now (it doesn't seem to be a great fit...)
+##      to include age as a predictor in an ARIMA model since it would be a categorical predictor 
+##      and not continuous -- I also wasn't sure if ARIMA/GAM models are considered linear models/
+##      if generalized linear models/generalized additive models are considered linear models,
+##      so for this assignment, I chose lm. 
 
 ## 2019-20 --------------------------------------------------------------------------------------------------
-mCovid2020 <- gam( formula = weeklyRate ~ ns(MMWRweek) + ageGroup,
+mCovid2020 <- lm( formula = weeklyRate ~ ns(MMWRweek) + ageGroup,
                    data = ( covidDat |> filter(Season == '2019-20') ) )
 check_model(mCovid2020)
 dwplot(mCovid2020, by_2sd = T) ## coefficient plot 
 
 ## 2020-21 --------------------------------------------------------------------------------------------------
-mCovid2021 <- gam( formula = weeklyRate ~ ns(MMWRweek) + ageGroup,
+mCovid2021 <- lm( formula = weeklyRate ~ ns(MMWRweek) + ageGroup,
                    data = ( covidDat |> filter(Season == '2020-21') ) )
 check_model(mCovid2021) ## diagnostic plots
 dwplot(mCovid2021, by_2sd = T) ## coefficient plot 
 
 ## 2021-22 --------------------------------------------------------------------------------------------------
-mCovid2022 <- gam( formula = weeklyRate ~ ns(MMWRweek) + ageGroup, 
+mCovid2022 <- lm( formula = weeklyRate ~ ns(MMWRweek) + ageGroup, 
                    data = ( covidDat |> filter(Season == '2021-22') ) )
 check_model(mCovid2022) ## diagnostic plots
 dwplot(mCovid2022, by_2sd = T) ## coefficient plot 
 
 ## 2022-23 --------------------------------------------------------------------------------------------------
-mCovid2023 <- gam( formula = weeklyRate ~ ns(MMWRweek) + ageGroup, 
+mCovid2023 <- lm( formula = weeklyRate ~ ns(MMWRweek) + ageGroup, 
                    data = ( covidDat |> filter(Season == '2022-23') ) )
 check_model(mCovid2023) ## diagnostic plots
 dwplot(mCovid2023, by_2sd = T) ## coefficient plot 
 
 ## The coefficients plots support the prediction the age group 65+ years has a higher rates of hospitalization, 
-## but I would not use these models to accept this -- the diagnostic plots show the models not fitting the data well. 
+## but I would not use these models to predict this -- the diagnostic plots show the models not fitting the data well. 
 
 
 
