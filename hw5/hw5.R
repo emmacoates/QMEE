@@ -39,7 +39,7 @@ plot(covidDat$endingDate, covidDat$weeklyRate) ## look at dot plot of data
 ## 2019-20 --------------------------------------------------------------------------------------------------
 mCovid2020 <- lm( formula = weeklyRate ~ ns(MMWRweek) + ageGroup,
                    data = ( covidDat |> filter(Season == '2019-20') ) )
-check_model(mCovid2020)
+check_model(mCovid2020) ## diagnostic plots
 dwplot(mCovid2020, by_2sd = T) ## coefficient plot 
 
 ## 2020-21 --------------------------------------------------------------------------------------------------
