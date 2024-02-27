@@ -50,29 +50,14 @@ X <- model.matrix( ~ 0 + ns(MMWRweek) + MMWRweek, data = filter(covidDat, Season
 head(X)
 plot(X[,1], X[,2])
 
-## 2019-20 --------------------------------------------------------------------------------------------------
-mCovid2020 <- lm( formula = weeklyRate ~ ns(MMWRweek) + ageGroup,
-                   data = ( covidDat |> filter(Season == '2019-20') ) )
-check_model(mCovid2020) ## diagnostic plots
-dwplot(mCovid2020, by_2sd = T) ## coefficient plot 
 
-## 2020-21 --------------------------------------------------------------------------------------------------
-mCovid2021 <- lm( formula = weeklyRate ~ ns(MMWRweek) + ageGroup,
-                   data = ( covidDat |> filter(Season == '2020-21') ) )
-check_model(mCovid2021) ## diagnostic plots
-dwplot(mCovid2021, by_2sd = T) ## coefficient plot 
+covidDatSeason <- split(covidDat, f = covidDat$Season)
+mCovid <- lm( formula = weeklyRate ~ ns(MMWRweek, df=5)*ageGroup,
+              data = covidDat )
+mCovidVec <- lapply( covidDatSeason[2:6], function(x) update(mCovid, data = x) )
+lapply( mCovidVec, function(x) check_model(x) )
+lapply( mCovidVec, function(x) dwplot(x, by_2sd = T) )
 
-## 2021-22 --------------------------------------------------------------------------------------------------
-mCovid2022 <- lm( formula = weeklyRate ~ ns(MMWRweek) + ageGroup, 
-                   data = ( covidDat |> filter(Season == '2021-22') ) )
-check_model(mCovid2022) ## diagnostic plots
-dwplot(mCovid2022, by_2sd = T) ## coefficient plot 
-
-## 2022-23 --------------------------------------------------------------------------------------------------
-mCovid2023 <- lm( formula = weeklyRate ~ ns(MMWRweek) + ageGroup, 
-                   data = ( covidDat |> filter(Season == '2022-23') ) )
-check_model(mCovid2023) ## diagnostic plots
-dwplot(mCovid2023, by_2sd = T) ## coefficient plot 
 
 ## The coefficients plots support the prediction the age group 65+ years has a higher rates of hospitalization, 
 ## but I would not use these models to predict this -- the diagnostic plots show the models not fitting the data well. 
