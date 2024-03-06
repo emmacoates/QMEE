@@ -11,8 +11,8 @@ library(splines)
 library(performance)
 library(dotwhisker)
 ## BMB: I don't see where you use these packages?
-library(mgcv)
-library(tidyr)
+## library(mgcv)
+## library(tidyr)
 
 
 # Data -------------------------------------------------------------------------------------------------------
@@ -45,19 +45,24 @@ plot(covidDat$endingDate, covidDat$weeklyRate) ## look at dot plot of data
 
 ## BMB: if you call ns() with no X it just scales the variable - it doesn't create a spline basis at all.
 ## so this is probably not what you meant what to do ...
-## you should probably specify a df= argument ... (or talk to us about using mgcv::gam() to fit *penalized* splines
-X <- model.matrix( ~ 0 + ns(MMWRweek) + MMWRweek, data = filter(covidDat, Season == "2019-20"))
-head(X)
-plot(X[,1], X[,2])
+## you should probably specify a df = argument ... (or talk to us about using mgcv::gam() to fit *penalized* splines
+# X <- model.matrix( ~ 0 + ns(MMWRweek) + MMWRweek, data = filter(covidDat, Season == "2019-20"))
+# head(X)
+# plot(X[,1], X[,2])
 
 
 covidDatSeason <- split(covidDat, f = covidDat$Season)
 mCovid <- lm( formula = weeklyRate ~ ns(MMWRweek, df=5)*ageGroup,
-              data = covidDat )
+              data = covidDat ) 
 mCovidVec <- lapply( covidDatSeason[2:6], function(x) update(mCovid, data = x) )
 lapply( mCovidVec, function(x) check_model(x) )
-lapply( mCovidVec, function(x) dwplot(x, by_2sd = T) )
+dwplot(mCovidVec)
 
+# use anova / predict 
+
+mCovidBySeason <- lm( formula = weeklyRate ~ ns(MMWRweek, df=5)*ageGroup*Season,
+              data = covidDat )
+check_model(mCovidBySeason)
 
 ## The coefficients plots support the prediction the age group 65+ years has a higher rates of hospitalization, 
 ## but I would not use these models to predict this -- the diagnostic plots show the models not fitting the data well. 
