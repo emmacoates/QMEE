@@ -35,14 +35,14 @@ covidDat1 <- with( covidDat,
 # frequentist lm model 
 summary(lm(weeklyRate~endingDate, data=covidDat))
 
-# diy JAGS model
+## diy JAGS model
 jagsmodel1 <- function() {
   for (i in 1:N){
     rate[i] ~ dnorm(pred[i],tau)
-    pred[i] <- m_time*time[i] 
+    pred[i] <- m_time*time[i]  ## BMB: no intercept??
   }
   m_time ~ dnorm(0, .0001)
-  tau ~ dgamma(.001, .001)
+  tau ~ dgamma(.001, .001) ## BMB: dangerous in limited-data situations but OK
 }
 
 jags.fit1 <- jags(model.file=jagsmodel1,
@@ -58,7 +58,7 @@ xyplot(mm1,layout=c(2,3))  ## prettier trace plot
 densityplot(mm1,layout=c(2,3)) ## prettier density plot
 gg_jags1 <- ggplot(tidy(jags.fit1, conf.int = TRUE), aes(estimate, term, xmin = conf.low, xmax = conf.high)) + geom_pointrange()
 print(gg_jags1)
-
+## BMB: a little boring with only one parameter ...
 
 ## Model fit 2 (age as predictor) ------------------------------------------------------------------------
 # frequentist lm model 
@@ -72,11 +72,13 @@ covidDat2 <- with( covidDat,
                               rate=weeklyRate) )
 jagsmodel2 <- function() {
   for (i in 1:N) {
-    ## Poisson model
-    logmean[i] <- m_age[age[i]]    ## predicted log(counts)
-    pred[i] <- exp(logmean[i])       ## predicted counts
-    ## use log-link so that we never end up with negative predicted values
-    rate[i] ~ dnorm(pred[i], tau)
+      ## Poisson model
+      ## BMB: again, no intercept ...
+      logmean[i] <- m_age[age[i]]    ## predicted log(counts)
+      pred[i] <- exp(logmean[i])       ## predicted counts
+      ## use log-link so that we never end up with negative predicted values
+      rate[i] ~ dnorm(pred[i], tau)
+      ## shouldn't you use a dpois if you're going to do a Poisson model?
   }
   ## define priors for all parameters in a loop
   for (i in 1:nage) {
@@ -98,7 +100,8 @@ xyplot(mm2,layout=c(2,3))  ## prettier trace plot
 densityplot(mm2,layout=c(2,3)) ## prettier density plot
 gg_jags2 <- ggplot(tidy(jags.fit2, conf.int = TRUE), aes(estimate, term, xmin = conf.low, xmax = conf.high)) + geom_pointrange()
 print(gg_jags2)
-
+## BMB: Looks like something is wrong -- why are the confidence intervals
+## so huge?
 
 
 ## Models that throw errors/don't compile -------------------------------------------------------------------------
@@ -151,3 +154,4 @@ print(gg_jags2)
 ## assignment don't make much sense!
 
 
+## mark: 2
